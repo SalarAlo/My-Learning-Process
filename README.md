@@ -5,7 +5,7 @@ Hello this is a repository for all of my projects i build and want to publish
 A little bit about me:
 <br>Im a 15 year old programmer called "Salar" <br>
 I code in the languages c++ and c# and use qt and unity<br>
-My facourite language is c++
+My favourite language is c++
 <br> <br>
 <hr>
 I will publish files of these types:
