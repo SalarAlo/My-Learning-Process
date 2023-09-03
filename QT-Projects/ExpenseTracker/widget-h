@@ -1,0 +1,45 @@
+#ifndef WIDGET_H
+#define WIDGET_H
+
+#include <QWidget>
+#include <QTableWidget>
+#include <QTableWidgetItem>
+QT_BEGIN_NAMESPACE
+namespace Ui { class Widget; }
+QT_END_NAMESPACE
+
+class Widget : public QWidget
+{
+    Q_OBJECT
+
+public:
+    Widget(QWidget *parent = nullptr);
+    ~Widget();
+
+private:
+    double totalSpent = 0;
+
+    void Reset();
+
+    bool canAdd();
+
+    QString currentDate();
+    QString currentExpense();
+    QString currentCategory();
+    QString currentNotes();
+
+    std::vector<QTableWidgetItem*> garbageCollection;
+
+    QTableWidget* table;
+
+private slots:
+    void on_addButton_clicked();
+    void on_addCategory_clicked();
+    void on_removeSelectedButton_clicked();
+    void on_amount_valueChanged(double arg1);
+    void on_categoryLineEdit_textChanged(const QString &arg1);
+
+private:
+    Ui::Widget *ui;
+};
+#endif // WIDGET_H
