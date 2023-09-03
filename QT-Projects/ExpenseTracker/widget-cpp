@@ -108,6 +108,7 @@ void Widget::on_addCategory_clicked()
 
     // add the QString to our combo box
     ui->categoryComboBox->addItem(categoryToAdd);
+    ui->categoryLineEdit->setText("");
 }
 
 void Widget::on_removeSelectedButton_clicked()
