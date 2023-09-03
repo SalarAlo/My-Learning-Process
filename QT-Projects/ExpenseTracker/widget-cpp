@@ -64,7 +64,7 @@ QString Widget::currentCategory()
 QString Widget::currentNotes()
 {
     // get the current notes if theyre empty we return '/'
-    return (ui->notesLineEdit->text().isEmpty()) ? ui->notesLineEdit->text() : "/";
+    return (!ui->notesLineEdit->text().isEmpty()) ? ui->notesLineEdit->text() : "/";
 }
 
 void Widget::on_addButton_clicked()
