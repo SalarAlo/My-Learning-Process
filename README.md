@@ -18,6 +18,7 @@ I will publish files of these types:
 <hr>
 
 <br>
-# I created this repository on the 3rd of september 2023 <br>
-# and the main reason why i created this repository is so that when i <br>
-# apply for jobs or uni i can show them the progress i made over the years
+I created this repository on the 3rd of september 2023 <br>
+and the main reason why i created this repository is so <br>
+that when i apply for jobs or uni i can show them the <br>
+progress i made over the years
