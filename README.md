@@ -14,3 +14,8 @@ I will publish files of these types:
   <li>Code of my projects</li>
   <li>Things i learned</li>
 </ul>
+
+<br>
+#I created this repository on the 3rd of september 2023 <br>
+#and the main reason why i created this repository is so that when i <br>
+#apply for jobs or uni i can show them the progress i made over the years
