@@ -1,0 +1,32 @@
+#ifndef SIGNINDIALOG_H
+#define SIGNINDIALOG_H
+
+#include <QDialog>
+#include <QMap>
+
+namespace Ui {
+class SignInDialog;
+}
+
+class SignInDialog : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit SignInDialog(QWidget *parent = nullptr);
+    ~SignInDialog();
+    QMap<QString, QString> GetUpdatedUserMap();
+    QString username;
+    QString password;
+
+private slots:
+
+private:
+    Ui::SignInDialog *ui;
+
+
+    std::tuple<QString, QString> usernameAndPassword();
+
+};
+
+#endif // SIGNINDIALOG_H
