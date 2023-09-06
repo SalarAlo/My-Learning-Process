@@ -1,0 +1,61 @@
+#include "signindialog.h"
+#include "ui_signindialog.h"
+
+#include <QMessageBox>
+
+SignInDialog::SignInDialog(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::SignInDialog)
+{
+    ui->setupUi(this);
+
+    // if button gets clicked
+    connect(ui->signInButton, &QPushButton::clicked, [=]()
+    {
+        // get all of our lineEdits insides
+        QString _username = ui->usernameLE->text();
+        QString _password = ui->passwrodLE->text();
+        QString passwordConf = ui->passwordConfirmationLE->text();
+
+        // bool to check if anything is missing
+        bool anythingMissed = (_username.isEmpty() || _password.isEmpty() || passwordConf.isEmpty());
+
+        // if anything is missing we reject and message the user that he didnt type smt in
+        if(anythingMissed)
+        {
+            QMessageBox::warning(this, "Warning", "You didnt fill in a required slot! \n Please try again ");
+            reject();
+        }
+        else // nothing is missing
+        {
+            // if confirmation doesnt match reject and message user
+            if(_password != passwordConf)
+            {
+                QMessageBox::warning(this, "Warning", "The password confirmation doesnt match with the password! \n Please try again ");
+                reject();
+            }// everything matches and is fine!
+            else
+            {
+                // Tell the user that he was sucessfully aple to sign in!
+                QMessageBox::information(this, "Information", "Succesfully created ann account. Your ready to login");
+
+                password = _password;
+                username = _username;
+
+                // everything worked fine so we accept!
+                accept();
+            }
+        }
+    });
+}
+
+SignInDialog::~SignInDialog()
+{
+    delete ui;
+}
+
+// Getter to return this updatedUserMap
+std::tuple<QString, QString> SignInDialog::usernameAndPassword()
+{
+    return {username, password};
+}
