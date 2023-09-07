@@ -1,5 +1,30 @@
 # My-Projects
 
+<style>
+  .subscribe-button {
+    background-color: rgb(200, 0, 0);
+    color: white;
+    border: none;
+    height: 36px;
+    width: 105px;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-right: 8px;
+
+    transition: opacity 0.15s;
+  }
+
+  .subscribe-button:hover
+  {
+    opacity: 0.8;
+  }
+
+  .subscribe-button:active
+  {
+    opacity: 0.6;
+  }
+</style>
+
 Hello this is a repository for all of my projects i build and want to publish
 <br>
 A little bit about me:
@@ -22,3 +47,8 @@ I created this repository on the 3rd of september 2023 <br>
 and the main reason why i created this repository is so <br>
 that when i apply for jobs or uni i can show them the <br>
 progress i made over the years
+<br>
+
+<button class="subscribe-button">
+  SUBSCRIBE
+</button>
