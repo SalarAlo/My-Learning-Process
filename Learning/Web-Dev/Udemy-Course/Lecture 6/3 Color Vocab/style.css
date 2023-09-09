@@ -1,0 +1,31 @@
+img
+{
+  width:  200px;
+  height: 200px;
+  border: 3px solid black;
+}
+
+#Yellow
+{
+  color: rgb(255, 255, 0);
+}
+
+#Green
+{
+  color: greenyellow;
+}
+
+#Red
+{
+  color: red;
+}
+
+#Blue
+{
+  color: blue;
+}
+
+#Orange
+{
+  color: orange;
+}
