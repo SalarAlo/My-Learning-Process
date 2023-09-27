@@ -36,3 +36,42 @@ str.slice(1, -1) // this will start from the index 1 and exclude the last letter
 const middleSeat = str => str.slice(-1) === 'B' || str.slice(-1) === 'E';
 
 console.log(middleSeat("23B"))
+
+// yourw also able to change the case of a string (lower/upper) but this wont apply to the original string will
+// only return a string with a all lowercase/ all uppercase
+airline.toLowerCase();
+airline.toUpperCase();
+
+// Fix captilization in name
+const passenger = 'sAlaR';
+const passengerLower = passenger.toLowerCase();
+const passengerCorrect = passengerLower[0].toUpperCase() + passengerLower.slice(1);
+console.log(passengerCorrect);
+
+// Comparing email
+const email = "hello@jonas.io";
+const loginEmail = '  Hello@Jonas.Io \n';
+
+// the trim method removes any white spaces or new line charachters or special charachters like that that trigger white spaces
+const correctEmail = loginEmail.toLowerCase().trim();
+const EmailComparer = (correctEmail, compareEmail) => correctEmail === compareEmail;
+console.log(correctEmail);
+
+// replacing parts of string
+const priceGB = '288,97$'
+// the replace method replaces a given string (first arg) and then replaces the string that youve provided in the parameters with 
+// the second argument that youve provided! Ans we can also chain thos replace methods
+const priceEU = priceGB.replace(',', '.').replace('$', '€');
+
+// the replace only replaces the first occurence of that given string!
+const announcement = 'All passengers come to barding door 23. Barding door 23';
+console.log(announcement.replace("door", 'gate'));
+console.log(priceEU);
+
+// Boolean methods
+
+// tells us if a certain substring in another string
+console.log(plane.includes('A3'));
+
+plane.startsWith('A32');
+plane.endsWith('0');
