@@ -12,7 +12,7 @@ airline.length;
 airline.indexOf('r'); // 6 becouse T(0) A(1) P(2)  (3) A(4) I(5) //! R(6)
 
 // we can also get the last index of a charachter
-airline.lastIndexOf('r') // 10 i wont count all of that ngl
+airline.lastIndexOf('r') // 10
 
 // we can slice the string
 // that means that we can call a function wich returns us a substring
