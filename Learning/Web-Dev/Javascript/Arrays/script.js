@@ -66,15 +66,6 @@ const inputClosePin = document.querySelector('.form__input--pin');
 // ! LECTURES
 
 /* 
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
-
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
- */
-/* 
 let arr = [...'abcde']; 
 // ! slice
 // this works the exact same as the slice Method with the strings 
@@ -115,6 +106,7 @@ const letters = arr.concat(['f, g, h, i, j']);
  */
 /////////////////////////////////////////////////
 
+/* 
 const arr = [23, 11, 64]
 
 console.log(arr[0]);
@@ -125,4 +117,30 @@ const lastElementOkay = arr.slice(-1)[0];
 const lastElementGood = arr.at(-1);
 
 // also works on strings!
-const lastChar = 'Salar'.at(-1);
+const lastChar = 'Salar'.at(-1); 
+*/
+
+//! forEach(...);
+/*
+const currencies = new Map([
+  ['USD', 'United States dollar'],
+  ['EUR', 'Euro'],
+  ['GBP', 'Pound sterling'],
+]);
+
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// for of
+for(const [i, move] of movements.entries())
+  console.log((move < 0) ? 'You withdrew ' + move : 'You deposited ' + move);
+
+console.log('________________________________________________')
+
+// foreach
+// ! continue and break doesnt work in forEach!
+
+movements.forEach(function(currElement, i, arr)
+{
+  console.log((currElement < 0) ? 'You withdrew ' + Math.abs(currElement) : 'You deposited ' + currElement);
+});
+ */
