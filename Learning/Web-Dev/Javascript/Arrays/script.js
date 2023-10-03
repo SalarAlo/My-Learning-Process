@@ -1,14 +1,36 @@
 'use strict';
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// BANKIST APP
+// Elements
+const labelWelcome = document.querySelector('.welcome');
+const labelDate = document.querySelector('.date');
+const labelBalance = document.querySelector('.balance__value');
+const labelSumIn = document.querySelector('.summary__value--in');
+const labelSumOut = document.querySelector('.summary__value--out');
+const labelSumInterest = document.querySelector('.summary__value--interest');
+const labelTimer = document.querySelector('.timer');
 
-// Data
+const containerApp = document.querySelector('.app');
+const containerMovements = document.querySelector('.movements');
+
+const btnLogin = document.querySelector('.login__btn');
+const btnTransfer = document.querySelector('.form__btn--transfer');
+const btnLoan = document.querySelector('.form__btn--loan');
+const btnClose = document.querySelector('.form__btn--close');
+const btnSort = document.querySelector('.btn--sort');
+const btnAccount = document.querySelector('.createAccount__btn');
+
+const inputLoginUsername = document.querySelector('.login__input--user');
+const inputLoginPin = document.querySelector('.login__input--pin');
+const inputTransferTo = document.querySelector('.form__input--to');
+const inputTransferAmount = document.querySelector('.form__input--amount');
+const inputLoanAmount = document.querySelector('.form__input--loan-amount');
+const inputCloseUsername = document.querySelector('.form__input--user');
+const inputClosePin = document.querySelector('.form__input--pin');
+
 const account1 = {
   owner: 'Jonas Schmedtmann',
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
-  interestRate: 1.2, // %
+  interestRate: 1.2,
   pin: 1111,
 };
 
@@ -34,34 +56,59 @@ const account4 = {
 };
 
 const accounts = [account1, account2, account3, account4];
+let currentlyLoggedIn = null;
+let sorted = false;
 
-// Elements
-const labelWelcome = document.querySelector('.welcome');
-const labelDate = document.querySelector('.date');
-const labelBalance = document.querySelector('.balance__value');
-const labelSumIn = document.querySelector('.summary__value--in');
-const labelSumOut = document.querySelector('.summary__value--out');
-const labelSumInterest = document.querySelector('.summary__value--interest');
-const labelTimer = document.querySelector('.timer');
+const getBalance = acc => acc.movements.reduce((acc, mov) => acc + mov);
 
-const containerApp = document.querySelector('.app');
-const containerMovements = document.querySelector('.movements');
+const createUserNames = function()
+{
+  accounts.forEach(function(acc) {
+    acc.username = acc.owner.
+    toLowerCase().
+    split(' ').
+    map((name) => name[0]).
+    join('');
+  });
+}
+createUserNames();
 
-const btnLogin = document.querySelector('.login__btn');
-const btnTransfer = document.querySelector('.form__btn--transfer');
-const btnLoan = document.querySelector('.form__btn--loan');
-const btnClose = document.querySelector('.form__btn--close');
-const btnSort = document.querySelector('.btn--sort');
+const showBalance = function(movements)
+{
+  const balance = movements.reduce((accumalator, mov) => accumalator + mov, 0);
+  labelBalance.textContent = balance + '€';
+}
 
-const inputLoginUsername = document.querySelector('.login__input--user');
-const inputLoginPin = document.querySelector('.login__input--pin');
-const inputTransferTo = document.querySelector('.form__input--to');
-const inputTransferAmount = document.querySelector('.form__input--amount');
-const inputLoanAmount = document.querySelector('.form__input--loan-amount');
-const inputCloseUsername = document.querySelector('.form__input--user');
-const inputClosePin = document.querySelector('.form__input--pin');
+const showSummary = function(movements)
+{
+  const noWithdrews = !movements.some((elem) => elem < 0);
+  const noDeposits = !movements.some((elem) => elem > 0);
 
-const displayMovements = function(movements){
+  console.log(noWithdrews, noDeposits);
+
+  const depositsSum = noDeposits ? 0 : movements
+    .filter(mov => mov > 0)
+    .reduce((accu, mov) => accu + mov);
+  
+  
+
+  const withdrewsSum = noWithdrews ? 0 : movements
+    .filter(mov => mov < 0)
+    .reduce((accu, mov) => accu + mov);
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => deposit * 1.2 / 100)
+    .filter(interest => interest >= 1)
+    .reduce((accu, interest) => accu + interest);
+
+  labelSumIn.textContent = depositsSum + '€';
+  labelSumOut.textContent = Math.abs(withdrewsSum) + '€';
+  labelSumInterest.textContent = interest + '€';
+}
+
+const showMovements = function(movements)
+{
   containerMovements.innerHTML = '';
 
   movements.forEach(function(mov, i)
@@ -72,7 +119,7 @@ const displayMovements = function(movements){
     <div class="movements__row">
       <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
       <div class="movements__date">3 days ago</div>
-      <div class="movements__value">${mov}</div>
+      <div class="movements__value">${mov}€</div>
     </div>
     `;
 
@@ -80,113 +127,142 @@ const displayMovements = function(movements){
 
   });
 }
-displayMovements(account1.movements);
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// ! LECTURES
-
-
-/*
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
-
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
- */
-/* 
-let arr = [...'abcde']; 
-// ! slice
-// this works the exact same as the slice Method with the strings 
-// so all of the rules that we applied to the string slice Method also applies to this one!
-// the slice method returns an array
-
-// the way this works is that you get each and every element starting from index 2 if you only pass in 1 parameter
-const newArr = arr.slice(2);
-
-// the way this workd is that you can also specify an end parameter but its exclusive
-const newArr2 = arr.slice(2, 4);
-
-
-// we can also specify a negative parameter and this works the exact same with the string.slice method
-const newArr3 = arr.slice(-3);
-
-// ! splice
-// works in almost the same way as in slice but the fundamental difference is that it also mutates the original array
-// that you called that function on so for example if you call the splice method on a new array like this
-// the splice method will return the new array the exact same as the slice Method but it will also 
-// remove the values from that original array that we called the method on
-
-const arr2 = [...'abcde'];
-
-arr2.splice(-3);
-console.log(arr2);
-arr2.slice(0, 1);
-
-// ! Reverse
-// THIS METHOD DOES MUTATE THE ORIGINAL ARRAY!
-const arr3 = [...'abcde'];
-console.log(arr3.reverse());
-console.log(arr3.reverse());
-
-// ! Concat
-// combine arrays
-const letters = arr.concat(['f, g, h, i, j']);
- */
-/////////////////////////////////////////////////
-
-/* 
-const arr = [23, 11, 64]
-
-console.log(arr[0]);
-console.lof(arr.at(0))
-
-const arrLastElementad = arr[arr.length - 1];
-const lastElementOkay = arr.slice(-1)[0];
-const lastElementGood = arr.at(-1);
-
-// also works on strings!
-const lastChar = 'Salar'.at(-1); 
-*/
-
-//! forEach(...);
-/*
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
-
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
-// for of
-for(const [i, move] of movements.entries())
-  console.log((move < 0) ? 'You withdrew ' + move : 'You deposited ' + move);
-
-console.log('________________________________________________')
-
-// foreach
-// ! continue and break doesnt work in forEach!
-
-movements.forEach(function(currElement, i, arr)
+const login = function(acc)
 {
-  console.log((currElement < 0) ? 'You withdrew ' + Math.abs(currElement) : 'You deposited ' + currElement);
-});
- */
+  sorted = false;
+  const movs = acc.movements;
 
-//! Foreach on maps and sets
-/* 
-// Map+
-currencies.forEach(function(value, key, map){
-  console.log(`map[${key}]: ${value}`)
+  showMovements(movs);
+  showSummary(movs);
+  showBalance(movs);
+
+  containerApp.style.opacity = 1;
+  labelWelcome.textContent = 'Welcome back, ' + acc.owner.split(' ')[0];
+
+  inputTransferAmount.value = '';
+  inputTransferTo.value = '';
+}
+
+const logout = function(){
+  containerApp.style.opacity = 0;
+  labelWelcome.textContent = 'Log in to get started';
+
+  inputCloseUsername.value = '';
+  inputClosePin.value = '';
+}
+
+const checkForUser = function()
+{
+  const reset = function(){
+    inputLoginPin.value = ''; 
+    inputLoginUsername.value = '';
+  }
+
+  const usernameInp = inputLoginUsername.value;
+  const passwordInp = inputLoginPin.value;
+
+  const loginUser = accounts.find(acc => acc.username === usernameInp);
+
+
+  reset();
+
+  if(loginUser?.username ===  usernameInp && loginUser?.pin === Number(passwordInp)){
+    login(loginUser);
+    currentlyLoggedIn = loginUser;
+  }
+}
+
+
+const transfer = function()
+{
+  const amount = Number(inputTransferAmount.value);
+  const userTargetUsername = inputTransferTo.value;
+
+  const transferTarget = accounts.find(acc => acc.username == userTargetUsername);
+
+  if(!transferTarget || transferTarget === currentlyLoggedIn)
+    return;
+
+  if(getBalance(currentlyLoggedIn) < amount || amount <= 0)
+    return;
+
+  transferTarget.movements.push(amount);
+
+  currentlyLoggedIn.movements.push(-amount);
+  login(currentlyLoggedIn);
+};
+
+const closeAccount = function(){
+  const usernameConf = inputCloseUsername.value;
+  const pinConf = inputClosePin.value;
+
+  console.log(currentlyLoggedIn);
+  console.log('pinConf = ' + pinConf, 'usernameConf = ' + usernameConf);
+
+  if(currentlyLoggedIn.username == usernameConf && currentlyLoggedIn.pin == pinConf){
+    const accIndex = accounts.findIndex((acc) => acc === currentlyLoggedIn);
+    accounts.splice(accIndex, 1);
+
+    currentlyLoggedIn = null;
+    logout();
+  }
+} 
+
+const requestLoan = function(){
+
+  const loan = Number(inputLoanAmount.value);
+
+  if(loan === NaN || loan <= 0)
+    return;
+
+  const deposits = currentlyLoggedIn.movements.filter(elem => elem > 0);
+  const rule10Percent = deposits.some(dep => dep >= loan * 0.1);
+
+  if(rule10Percent){
+    currentlyLoggedIn.movements.push(loan);
+
+    inputLoanAmount.value = '';
+
+    login(currentlyLoggedIn);
+  }
+
+}
+
+const sortMovements = function(){
+  const sortedMovements = [...currentlyLoggedIn.movements].sort((a, b) => a - b);
+
+  showMovements(sorted ? currentlyLoggedIn.movements : sortedMovements);
+  sorted = !sorted;
+}
+
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  checkForUser();
 });
 
-// Set
 
-const movementsUnique = new Set(movements);
-movementsUnique.forEach(function(value, key, map){
-  console.log(value);
+btnTransfer.addEventListener('click', function(e){
+  e.preventDefault();
+
+  transfer();
 });
-*/
+
+btnClose.addEventListener('click', function(e){
+  e.preventDefault();
+
+  closeAccount();
+});
+
+btnLoan.addEventListener('click', function(e){
+  e.preventDefault();
+
+  requestLoan();
+});
+
+btnSort.addEventListener('click', function(e){
+  e.preventDefault();
+
+  sortMovements();
+});
