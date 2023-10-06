@@ -1,0 +1,142 @@
+*{
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+body{
+  
+  background-image: linear-gradient(100deg, hsl(335, 100%, 50%), #ae00ff);
+}
+
+.background{
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(100, 100, 109);
+  width: 60%;
+  height: 600px;
+  border-radius: 15px;
+
+  margin: 0 20%;
+}
+
+.background > *{
+  margin: 0px 20px;
+}
+
+.title
+{
+  color: rgb(158, 158, 158);
+
+  font-size: 50px;
+}
+
+#input-new-task{
+  width: 70%;
+  height: 40px;
+
+  border-radius: 10px;
+  border: none;
+  background-color: rgb(66, 66, 66);
+  color: white;
+  padding-left: 10px;
+}
+
+#add-task-button{
+  margin-left: 20px;
+  border-radius: 10px;
+  border: none;
+  background-color: transparent;
+}
+
+.basic-button {
+  background-image: linear-gradient(135deg, #ff00d4, #b572d4);
+  border-radius: 6px;
+  box-sizing: border-box;
+  color: #ffffff;
+  display: inline-block;
+  height: 40px;
+  font-size: 1.4em;
+  font-weight: 600;
+  padding: 4px;
+  position: relative;
+  text-decoration: none;
+  width: 7em;
+  z-index: 2;
+
+  cursor: pointer;
+}
+
+.basic-button:hover {
+  color: #fff;
+}
+
+.basic-button .bn39span {
+  align-items: center;
+  background: #0e0e10;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  transition: background 0.5s ease;
+  width: 100%;
+}
+
+.basic-button:hover .bn39span {
+  background: transparent;
+}
+
+.todo-container{
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.todo{
+  height: 50px;
+  background-color: rgb(37, 37, 37);
+
+  width: 90%;
+
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.description{
+  color: white;
+  font-weight: 500;
+}
+
+.todo > div > button{
+  border: none;
+  background-color: transparent;
+
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+
+  width: 70px;
+
+  transition: all 0.5s;
+}
+
+.todo > div > button:hover{
+  background-color: white;
+  color: black;
+}
+
+.clearBtn {
+  margin-top: 20px;
+}
+
+.Input-User-Container{
+  display: flex;
+}
+
+.addTaskBtn{
+  margin-left: 35px;
+}
