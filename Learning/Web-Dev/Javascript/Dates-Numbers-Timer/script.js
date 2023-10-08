@@ -11,7 +11,7 @@
 
 const account1 = {
   owner: 'Jonas Schmedtmann',
-  movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
+  movements: [200, 455.23, -306.5, 25_000, -642.21, -133.9, 79.97, 1_300],
   interestRate: 1.2, // %
   pin: 1111,
 
@@ -31,7 +31,7 @@ const account1 = {
 
 const account2 = {
   owner: 'Jessica Davis',
-  movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+  movements: [5_000, 3_400, -150, -790, -3_210, -1_000, 8_500, -30],
   interestRate: 1.5,
   pin: 2222,
 
@@ -84,11 +84,44 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 let currentlyLoggedIn = null;
 let sorted = false;
+const logoutTime = 300;
+let currentTimer = undefined;
 
+const daysPassedSince = (date) => Math.round(Math.abs((new Date() - date) / (1000 * 60 * 60 * 24)));
+
+// returns the current date
+const currDate = () => new Date();
+
+// get the balance of the account we've passed in
 const getBalance = acc => acc.movements.reduce((acc, mov) => acc + mov);
 
-const createUserNames = function()
-{
+// get a string or some value and turn it into a date
+const turnToDate = str => new Date(str);
+
+// add a zero before a number which is below 10 so for example 9 = 09
+const addZero = num => ((num < 10) ?  ('0' + (num)) : (num))
+
+// format a date value into a human readable string
+const formatToReadableDate = function(date){
+  const daysPassed = daysPassedSince(date);
+  if(daysPassed === 0){
+    return 'today';
+  }
+  else if(daysPassed === 1){
+    return 'yesterday';
+  }
+  else if(daysPassed <= 7){
+    return daysPassed + ' days ago';
+  }
+
+  return addZero(date.getDate()) + '.' + addZero(date.getMonth() + 1) + '.' + date.getFullYear()
+};
+
+// get the current date formatted to human readable 
+const getCurrentDateFormated = () => formatToReadableDate(currDate()) + ', ' + addZero(currDate().getHours()) + ':' + addZero(currDate().getMinutes());
+
+// each of the accounts names get shortened up to the 2 initals so jonas schmeddtman turns into = js for example
+const createUserNames = function(){
   accounts.forEach(function(acc) {
     acc.username = acc.owner.
     toLowerCase().
@@ -97,20 +130,33 @@ const createUserNames = function()
     join('');
   });
 }
+
+
+// setUp the date stuff that is necessary for our codebase
+const setUpDate = function(){
+  accounts.forEach(function(acc){
+    acc.movementsDates.forEach(function(_, i){
+      acc.movementsDates[i] = turnToDate(acc.movementsDates[i]);
+    });
+  });
+
+  labelDate.textContent =  getCurrentDateFormated();
+}
+
+// call the 2 functions
+setUpDate();
 createUserNames();
 
-const showBalance = function(movements)
-{
+// show the whole balance on the label 
+const showBalance = function(movements){
   const balance = movements.reduce((accumalator, mov) => accumalator + mov, 0);
   labelBalance.textContent = balance + '€';
 }
 
-const showSummary = function(movements)
-{
+// show the summary of the user thats currently logged in
+const showSummary = function(movements){
   const noWithdrews = !movements.some((elem) => elem < 0);
   const noDeposits = !movements.some((elem) => elem > 0);
-
-  console.log(noWithdrews, noDeposits);
 
   const depositsSum = noDeposits ? 0 : movements
     .filter(mov => mov > 0)
@@ -133,8 +179,8 @@ const showSummary = function(movements)
   labelSumInterest.textContent = interest + '€';
 }
 
-const showMovements = function(movements)
-{
+// show the movements of the user thats currently logged in
+const showMovements = function(movements, dates){
   containerMovements.innerHTML = '';
 
   movements.forEach(function(mov, i)
@@ -144,7 +190,7 @@ const showMovements = function(movements)
     const html = `
     <div class="movements__row">
       <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
-      <div class="movements__date">3 days ago</div>
+      <div class="movements__date">${formatToReadableDate(dates[i])}</div>
       <div class="movements__value">${mov.toFixed(2)}€</div>
     </div>
     `;
@@ -154,12 +200,12 @@ const showMovements = function(movements)
   });
 }
 
-const login = function(acc)
-{
+// login the user that weve passed in
+const login = function(acc){
   sorted = false;
   const movs = acc.movements;
 
-  showMovements(movs);
+  showMovements(movs, acc.movementsDates);
   showSummary(movs);
   showBalance(movs);
 
@@ -168,18 +214,46 @@ const login = function(acc)
 
   inputTransferAmount.value = '';
   inputTransferTo.value = '';
+
+  clearInterval(currentTimer);
+  labelTimer.textContent = '05:00';
+  currentTimer = setTimer();
 }
 
-const logout = function(){
+const setTimer = function(){
+  let seconds = logoutTime;
+
+  const timer = setInterval(()=> {
+    seconds--; 
+
+    let minutes = Math.floor(seconds / 60);
+    let displaySeconds = seconds % 60;
+    const finalTime = addZero(minutes) + ':' + addZero(displaySeconds);
+    labelTimer.textContent = finalTime;
+
+    if(seconds === 0){
+      logout(timer);
+    }
+  }, 1000)
+
+  return timer;
+}
+
+// logout a user
+const logout = function(timer){
+  currentlyLoggedIn = null;
+
   containerApp.style.opacity = 0;
   labelWelcome.textContent = 'Log in to get started';
 
   inputCloseUsername.value = '';
   inputClosePin.value = '';
+
+  clearInterval(currentTimer);
 }
 
-const checkForUser = function()
-{
+// check if the user's login input is valid and then log him in
+const checkForUser = function(){
   const reset = function(){
     inputLoginPin.value = ''; 
     inputLoginUsername.value = '';
@@ -190,7 +264,6 @@ const checkForUser = function()
 
   const loginUser = accounts.find(acc => acc.username === usernameInp);
 
-
   reset();
 
   if(loginUser?.username ===  usernameInp && loginUser?.pin === Number(passwordInp)){
@@ -199,9 +272,8 @@ const checkForUser = function()
   }
 }
 
-
-const transfer = function()
-{
+// tranfer money to another user 
+const transfer = function(){
   const amount = Number(inputTransferAmount.value);
   const userTargetUsername = inputTransferTo.value;
 
@@ -214,17 +286,19 @@ const transfer = function()
     return;
 
   transferTarget.movements.push(amount);
+  transferTarget.movementsDates.push(new Date());
 
   currentlyLoggedIn.movements.push(-amount);
+  currentlyLoggedIn.movementsDates.push(new Date());
   login(currentlyLoggedIn);
 };
 
+// delete accounts
 const closeAccount = function(){
   const usernameConf = inputCloseUsername.value;
   const pinConf = inputClosePin.value;
 
   console.log(currentlyLoggedIn);
-  console.log('pinConf = ' + pinConf, 'usernameConf = ' + usernameConf);
 
   if(currentlyLoggedIn.username == usernameConf && currentlyLoggedIn.pin == pinConf){
     const accIndex = accounts.findIndex((acc) => acc === currentlyLoggedIn);
@@ -235,32 +309,41 @@ const closeAccount = function(){
   }
 } 
 
+// to request loans of money (rule: loan must be smaller then biggestdeposit * 10)
 const requestLoan = function(){
-
   const loan = Number(inputLoanAmount.value);
 
-  if(loan === NaN || loan <= 0)
-    return;
-
-  const deposits = currentlyLoggedIn.movements.filter(elem => elem > 0);
-  const rule10Percent = deposits.some(dep => dep >= loan * 0.1);
-
-  if(rule10Percent){
+  const getLoan = setTimeout(function(){
     currentlyLoggedIn.movements.push(loan);
+    currentlyLoggedIn.movementsDates.push(currDate());
 
     inputLoanAmount.value = '';
 
     login(currentlyLoggedIn);
-  }
+  }, 1000)
 
+  const invalidLoan = !(currentlyLoggedIn.movements.filter(elem => elem > 0)).some(dep => dep >= loan * 0.1) || loan === NaN || loan <= 0
+
+  if(invalidLoan)
+    clearTimeout(getLoan);
 }
 
-const sortMovements = function(){
-  const sortedMovements = [...currentlyLoggedIn.movements].sort((a, b) => a - b);
+// sort the movements from deposits to withdrews
+const sortedMovementsWithDates = function() {
+  const passSorted = (unsorted, isSorted) => (sorted ? isSorted : unsorted);
 
-  showMovements(sorted ? currentlyLoggedIn.movements : sortedMovements);
+  const map = new Map();
+  currentlyLoggedIn.movements.forEach((mov, i) => map.set(mov, currentlyLoggedIn.movementsDates[i]));
+  const mapSorted = [...map.entries()].sort((arr1, arr2) => arr1[0] - arr2[0]);
+
+  const sortedMovements = mapSorted.map(arr => arr[0]);
+  const sortedDates = mapSorted.map(arr => arr[1]);
+
+  showMovements(passSorted(sortedMovements, currentlyLoggedIn.movements), passSorted(sortedDates, currentlyLoggedIn.movementsDates));
   sorted = !sorted;
-}
+};
+
+// add the functions to the event listeners
 
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
@@ -290,7 +373,7 @@ btnLoan.addEventListener('click', function(e){
 btnSort.addEventListener('click', function(e){
   e.preventDefault();
  
-  sortMovements();
+  sortedMovementsWithDates();
 });
 
 // Lectures 
@@ -325,8 +408,102 @@ console.log(+(2.345).toFixed(2));
 
 */
 
+/* 
 const diameter = 287_460_000_000;
 const price = 1499_99;
 
 console.log(Number('102_12'));
 console.log(typeof(NaN));
+
+*/
+/* 
+// max safe value 9007199254740991
+console.log(Number.MAX_SAFE_INTEGER);
+
+console.log(12612871238612387123681327612386328623181236787216n);
+console.log(BigInt(12612871238612387123681327612386328623181236787216));
+
+// Operations with big int numbers
+console.log(10_000n + 10_000n); // => 20_000n
+console.log(321231231132132n * 10n); // => huge number
+
+const normalNumber = 12;
+const bigIntNumber = 32n;
+
+console.log(BigInt(normalNumber) * bigIntNumber);
+
+console.log(20n == 20); //! => true
+console.log(20n === 20); //! => false
+
+// Division
+console.log(-12n / 3n);
+ */
+
+// Create a date (4 ways)
+/* 
+//* current Date
+const now = new Date();
+console.log(now);
+
+//* parsing string
+const someDate = new Date('Sep 02 2023 19:12:21');
+const someDate2 = new Date('December 25, 2015');
+
+const dateMovements = new Date(account1.movementsDates[0]);
+console.log(dateMovements);
+
+//* numbers
+const date = new Date(2049, 11, 7, 13, 23, 5);
+const date2 = new Date(2049, 11, 7, 13, 23, 5);
+console.log(date);
+
+//* some Shit
+console.log(new Date(0));
+
+//! working with dates
+const future = new Date(2023, 9, 8, 0, 28);
+future.getFullYear();
+
+// 9 = October
+future.getMonth();
+
+// day in month
+future.getDate();
+
+// day in week
+future.getDay();
+
+future.getHours();
+
+future.getMinutes();
+future
+future.getSeconds();
+
+// miliseconds that have passed since january first 1970
+future.getTime();
+
+// miliseconds that have passed since january first 1970
+console.log(Date.now());
+
+future.setFullYear(2040);
+// also exists: setMonth, setDate, setHours and so on 
+*/
+/* 
+console.log('Hallo');
+setTimeout(()=>console.log('Here is your pizza :adult:'), 3000);
+console.log('Hallo');
+
+
+setTimeout((ing1, ing2)=>console.log(`Here is your pizza with ${ing1} and ${ing2}`), 3000, 'spinach', 'olives');
+
+const ingredients = ['spinach', 'olives']
+
+const pizzaDelivery = setTimeout(
+  (ing1, ing2) => console.log(`Here is your pizza with ${ing1} and ${ing2}`),
+  3000, 
+  ...ingredients
+)
+
+if(ingredients.includes('spinach'))
+  clearTimeout(pizzaDelivery);
+*/
