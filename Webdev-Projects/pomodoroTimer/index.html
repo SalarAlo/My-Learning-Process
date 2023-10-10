@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <link rel = 'stylesheet' href = 'styles.css'>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend&family=Lilita+One&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class = 'container'>
+    <p class = 'header'>Salufocus</p>
+    <div class = under-container>
+      <button class = 'btn btn-report'>
+        Report
+      </button>
+      <button class = 'btn btn-settings'>
+        Settings
+      </button>
+      <img src = 'img/yook4q7u.bmp' alt = 'profile' class = 'profile-img'>
+    </div>
+  </div>
+  <hr>
+
+  <div class = 'timer-backgorund'>
+    <div class = 'time-container'>
+      <button class = 'btn-time'>Focus Mode</button>
+      <button class = 'btn-time'>Short Break</button>
+      <button class = 'btn-time'>Long Break</button>
+    </div>
+
+    <h1 class = 'timer-label'>01:00</h1>
+    <button class = 'btn-start'>START</button>
+  </div>
+
+  <div class = 'container-2'>
+    <a class = 'counter'>#1</a>
+    <p style = 'margin: 0;'>Time to focus!</p>
+  </div>
+
+  <div class = 'container-3'>
+    <p>Tasks</p>
+    <img src = 'img/3Dots.png' style="margin-right: 20px;" class = 'options-btn'>
+  </div>
+
+  <div>
+    <button>Clear All Tasks</button>
+    <button>Clear All Tasks</button>
+  </div>
+
+  <hr style="border: 1px solid rgb(194, 128, 128); width: 450px; position: relative; right: 10px;">
+  <div class = 'todo-container'>
+    <!-- <div class = 'todo'>
+      <div>
+        <input
+        class="checkbox-todo"
+        type="checkbox">
+        <p class = 'todo-label-heading'>sasa</p>
+      </div>
+
+      <p class = 'todo-label-heading' style = 'color: rgb(90, 90, 90);'>0/1</p>
+      </div>
+    </div> -->
+    
+  </div>
+  
+  <button class = 'btn-add-todo'> 
+    + Add Task
+  </button>
+
+  <div class = 'add-container hidden'>
+    <input
+      class = 'task-input'
+      placeholder = "What are you working on ?" 
+      type="text" 
+      >
+    <a class = 'add-note'>+Add Note</a>
+    <div class = 'button-container'>
+      <button class = 'confirmation-btn cancel-btn'>Cancel</button>
+      <button class = 'confirmation-btn save-btn'>Save</button>
+    </div>
+  </div>
+
+  <script src = 'script.js'></script>
+</body>
+</html>
