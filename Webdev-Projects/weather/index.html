@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Weather application</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  <link rel = 'stylesheet' href = 'styles.css'>
+  <script defer src = 'app.js'></script>
+</head>
+<body>
+    <div class = 'search-container'>
+      <input 
+      class = 'location-inp'
+      placeholder="location">
+  
+      <button class = 'search-btn'><i class="fa fa-search"></i></button>
+    </div>
+  
+      <div class = 'weather-information-container'>
+        <img class = 'weather-icon hidden' src = ''>
+
+        <h1 class = 'temperature hidden'>
+          
+        </h1>
+
+        <h2 class = 'location hidden'>
+          
+        </h2>
+
+        <div class = 'additional-information'>
+
+          <div class = 'container-humidity hidden'>
+            <h2 class = 'humidity'></h2>
+            <p>Humidity</p>
+          </div>
+
+          <div class = 'container-wind-speed hidden'>
+            <h2 class = 'wind-speed'></h2>
+            <p>Wind Speed</p>
+          </div>
+      </div>
+  </div>
+</body>
+</html>

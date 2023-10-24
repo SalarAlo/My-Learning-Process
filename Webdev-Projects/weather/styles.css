@@ -1,0 +1,109 @@
+:root{
+  --colorPage: linear-gradient(to left, #cc00ff, #ff0000);
+  --textColor: rgb(255, 255, 255);
+  --defaultFont:'Nunito', sans-serif;
+  --defaultFontSize: 40px;
+}
+
+*{
+  color: var(--textColor);
+  font-family: var(--defaultFont);
+  font-size: var(--defaultFontSize);
+}
+
+body{
+  background-image: var(--colorPage);
+  font-family: var(--defaultFont);
+}
+
+.location, .temperature, .weather-icon, .additional-information > *{
+  transition: all 0.5s;
+}
+
+.location-inp, .location-inp:focus{
+  outline: none;
+  border: none;
+
+  font-family: var(--defaultFont);
+  font-size: 20px;
+  color: grey;
+
+  width: 300px;
+  height: 50px;
+
+  padding-left: 10px;
+  
+  border-radius: 30px;
+}
+
+.location-inp::placeholder{
+  color: rgb(190, 190, 190);
+}
+
+.search-container{
+  text-align: center;
+  width: 50%;
+  margin: 0 25%;
+}
+
+.search-btn{
+  border: none;
+  border-radius: 50%;
+
+  width: 50px;
+  height: 50px;
+  
+  font-size: 20px;
+
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.search-btn > i{
+  color: rgb(146, 146, 146);
+}
+
+.search-btn:hover{
+  opacity: 0.8;
+}
+
+.search-btn:active{
+  opacity: 0.6;
+}
+
+.weather-information-container{
+  display: flex;
+  text-align: center;
+  width: 50%;
+  margin: 0 25%;
+  flex-direction: column;
+}
+
+.additional-information{
+  display: flex;
+  gap: 50px;
+  
+  justify-content: center;
+}
+
+.temperature{
+  font-size: 100px;
+  margin: 0;
+}
+
+.weather-icon{
+  width: 20%;
+  margin: 50px 40%;
+}
+
+.location{
+  font-weight: 100;
+}
+
+.hidden{
+  opacity: 0;
+  transform: translateY(1000px);
+}
+
+.container{
+  transition: all 0.5s;
+}
